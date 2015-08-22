@@ -1,12 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityVS.LudumDareJam33.CSharp", "UnityVS.LudumDareJam33.CSharp.csproj", "{1CF2DCF5-D4CE-7B42-24F4-2D6F986BAABF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityVS.LudumDareJam33.CSharp.Editor", "UnityVS.LudumDareJam33.CSharp.Editor.csproj", "{5C3E98C4-177C-4606-0FE5-C4BADF7E1BF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CF2DCF5-D4CE-7B42-24F4-2D6F986BAABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF2DCF5-D4CE-7B42-24F4-2D6F986BAABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF2DCF5-D4CE-7B42-24F4-2D6F986BAABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF2DCF5-D4CE-7B42-24F4-2D6F986BAABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C3E98C4-177C-4606-0FE5-C4BADF7E1BF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3E98C4-177C-4606-0FE5-C4BADF7E1BF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3E98C4-177C-4606-0FE5-C4BADF7E1BF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3E98C4-177C-4606-0FE5-C4BADF7E1BF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
