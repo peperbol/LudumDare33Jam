@@ -17,7 +17,6 @@ public class BlockGenerator : MonoBehaviour {
   protected Block playerBlock;
 
   protected void genBlocksArroundPlayer() {
-    Debug.Log(Block.Vector3toCoords(player.position).x +" "+ Block.Vector3toCoords(player.position).y);
     playerBlock = GenBlock(Block.Vector3toCoords(player.position));
     Block t = GenBlock(playerBlock.Coordinates.left);
     GenBlock(t.Coordinates.upper);

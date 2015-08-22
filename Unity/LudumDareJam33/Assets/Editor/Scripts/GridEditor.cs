@@ -59,11 +59,13 @@ public class GridEditor : Editor {
                 g.AddSelected(new Grid.Coords() { x = X, y =Y});
               }
             }
-            
+
+
           }
           else
           {
             g.AddSelected(c);
+            
           }
 
             GUIUtility.hotControl = controlId;

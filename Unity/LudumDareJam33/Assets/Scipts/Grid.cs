@@ -3,11 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Grid : MonoBehaviour {
-  public GameObject[,] grid = new GameObject[32,32];
+  [SerializeField]
+  public GameObject[,] grid ;
   public List<Coords> selected = new List<Coords>();
   public static float scale = 1;
+
+  private GameObject[,] ObjectGrid  {
+    get
+    {
+      if (grid == null)
+      {
+        grid = new GameObject[32, 32];
+        Debug.Log("nooooo");
+      }
+      return grid;
+    }
+    set {
+      grid = value;
+    }
+  }
+
   public int Width {
-    get { return grid.GetLength(0); }
+    get
+    {
+      return ObjectGrid.GetLength(0);
+    }
     set {
       GameObject[,] newGrid = new GameObject[value, Height];
 
@@ -15,15 +35,18 @@ public class Grid : MonoBehaviour {
       {
         for (int y = 0; y < Height; y++)
         {
-          newGrid[x, y] = grid[x, y];
+          newGrid[x, y] = ObjectGrid[x, y];
         }
       }
-      grid = newGrid;
+      ObjectGrid = newGrid;
     }
   }
   public int Height
   {
-    get { return grid.GetLength(1); }
+    get
+    {
+      return ObjectGrid.GetLength(1);
+    }
     set {
       GameObject[,] newGrid = new GameObject[Width, value];
 
@@ -31,20 +54,34 @@ public class Grid : MonoBehaviour {
       {
         for (int y = 0; y < value && y < Height; y++)
         {
-          newGrid[x, y] = grid[x, y];
+          newGrid[x, y] = ObjectGrid[x, y];
         }
       }
-      grid = newGrid;
+      ObjectGrid = newGrid;
     }
   }
-  public void SetObject(int x, int y, GameObject go) {
-    if (grid[x, y] != null) {
-      DestroyImmediate(grid[x, y]);
-      Debug.Log(3);
+  public void SetObject(int x, int y, GameObject go)
+  {
+    ObjectGrid[x, y] = go;
+  }
+  public void BuildTiles()
+  {
+    while (transform.childCount > 0)
+    {
+      DestroyImmediate(transform.GetChild(0).gameObject);
     }
-    grid[x, y] = Instantiate(go);
-    grid[x, y].transform.SetParent(transform);
-    grid[x, y].transform.localPosition = new Vector3((x+ 0.5f)*scale, -(y + 0.5f) * scale, 0);
+    for (int x = 0; x < Width; x++)
+    {
+      for (int y = 0; y < Height; y++)
+      {
+        if (ObjectGrid[x, y] != null)
+        {
+          GameObject go = Instantiate(ObjectGrid[x, y]);
+          go.transform.SetParent(transform);
+          go.transform.localPosition = new Vector3((x + 0.5f) * scale, -(y + 0.5f) * scale, 0);
+        }
+      }
+    }
   }
 
   public void SetObject(Coords c, GameObject go) {
@@ -74,6 +111,8 @@ public class Grid : MonoBehaviour {
     {
       SetObject(selected[i], go);
     }
+
+    BuildTiles();
   }
 
   void OnDrawGizmosSelected()
@@ -99,6 +138,9 @@ public class Grid : MonoBehaviour {
     }
   }
 
+  void Start() {
+    BuildTiles();
+  }
   public struct Coords {
     public int x;
     public int y;
