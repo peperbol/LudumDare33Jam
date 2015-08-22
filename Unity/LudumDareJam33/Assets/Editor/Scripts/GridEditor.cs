@@ -7,9 +7,9 @@ public class GridEditor : Editor {
   public override void OnInspectorGUI()
   {
     //base.OnInspectorGUI();
-    g.Width = EditorGUILayout.IntField("Width", g.Width);
-    g.Height = EditorGUILayout.IntField("Height", g.Height);
-    g.scale = EditorGUILayout.FloatField("Scale", g.scale);
+    //g.Width = EditorGUILayout.IntField("Width", g.Width);
+    //g.Height = EditorGUILayout.IntField("Height", g.Height);
+    //Grid.scale = EditorGUILayout.FloatField("Scale", Grid.scale);
 
     if (g.selected.Count > 0) {
       g.SetObjectForSelected((GameObject)EditorGUILayout.ObjectField("Set GameObject", null, typeof(GameObject), false));

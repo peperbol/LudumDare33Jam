@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Grid : MonoBehaviour {
-  public GameObject[,] grid = new GameObject[0,0];
+  public GameObject[,] grid = new GameObject[32,32];
   public List<Coords> selected = new List<Coords>();
-  public float scale = 1;
+  public static float scale = 1;
   public int Width {
     get { return grid.GetLength(0); }
     set {
