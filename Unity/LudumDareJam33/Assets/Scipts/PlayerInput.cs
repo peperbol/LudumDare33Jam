@@ -15,5 +15,8 @@ public class PlayerInput : MonoBehaviour {
     v.x = Input.GetAxis("Horizontal");
     v.y = Input.GetAxis("Vertical");
     pi.Move(v);
+    if (Input.GetButton("Scare")) {
+      pi.Scare();
+    }
   }
 }

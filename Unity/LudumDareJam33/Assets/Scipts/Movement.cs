@@ -22,6 +22,7 @@ public class Movement : MonoBehaviour {
   }
 
    public virtual void Move(Vector2 dir) {
+    dir = Vector2.ClampMagnitude(dir, 1);
     rb.AddForce(dir*movementspeed * Time.deltaTime, ForceMode2D.Force);
     if (dir != Vector2.zero) {
       int newDirection;

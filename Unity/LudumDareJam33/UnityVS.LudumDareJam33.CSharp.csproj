@@ -63,12 +63,6 @@
     <Reference Include="UnityEngine.Analytics">
       <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -78,7 +72,9 @@
     <Compile Include="Assets\Scipts\BlockGenerator.cs" />
     <Compile Include="Assets\Scipts\Grid.cs" />
     <Compile Include="Assets\Scipts\KidAI.cs" />
+    <Compile Include="Assets\Scipts\KidsGroup.cs" />
     <Compile Include="Assets\Scipts\Movement.cs" />
+    <Compile Include="Assets\Scipts\NavNode.cs" />
     <Compile Include="Assets\Scipts\PlayerInput.cs" />
     <Compile Include="Assets\Scipts\PlayerInteraction.cs" />
     <Compile Include="Assets\Scipts\SortingOrderFix.cs" />

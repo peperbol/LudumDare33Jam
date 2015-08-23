@@ -16,7 +16,31 @@ public class Block : MonoBehaviour  {
     transform.SetParent(blockgen.transform);
     transform.localPosition = new Vector3(coords.x * Size, -coords.y * Size, 0);
     gameObject.name = coords.x + " : " + coords.y + " " + gameObject.name;
+
+    Connect();
   }
+  private void Connect() {
+    if (Left != null) {
+      Left.rightConnection.connections.Add(leftConnection);
+      leftConnection.connections.Add(Left.rightConnection);
+    }
+    if (Right != null)
+    {
+      Right.leftConnection.connections.Add(rightConnection);
+      rightConnection.connections.Add(Right.leftConnection);
+    }
+    if (Lower != null)
+    {
+      Lower.upperConnection.connections.Add(lowerConnection);
+      lowerConnection.connections.Add(Lower.upperConnection);
+    }
+    if (Upper != null)
+    {
+      Upper.lowerConnection.connections.Add(upperConnection);
+      upperConnection.connections.Add(Upper.lowerConnection);
+    }
+  }
+  public NavNode leftConnection, rightConnection, lowerConnection, upperConnection;
 
   public Block Left { get { return bg.GetBlock(Coordinates.left); } }
 
@@ -24,7 +48,7 @@ public class Block : MonoBehaviour  {
 
   public Block Lower { get { return bg.GetBlock(Coordinates.lower); } }
 
-  public Block upper { get { return bg.GetBlock(Coordinates.upper); } }
+  public Block Upper { get { return bg.GetBlock(Coordinates.upper); } }
 
   public static float Size { get{return Grid.scale * 32;}}
 

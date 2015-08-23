@@ -14,7 +14,17 @@ public class Grid : MonoBehaviour {
       if (grid == null)
       {
         grid = new GameObject[32, 32];
-        Debug.Log("nooooo");
+        for (int i = 0; i < transform.childCount; i++)
+        {
+          Transform c = transform.GetChild(i);
+
+          if (c.gameObject.tag != "Ignore")
+          {
+            int x = Mathf.FloorToInt(c.localPosition.x / scale);
+            int y = Mathf.FloorToInt(-c.localPosition.y / scale);
+            grid[x, y] = c.gameObject;
+          }
+        }
       }
       return grid;
     }
@@ -62,27 +72,15 @@ public class Grid : MonoBehaviour {
   }
   public void SetObject(int x, int y, GameObject go)
   {
-    ObjectGrid[x, y] = go;
-  }
-  public void BuildTiles()
-  {
-    while (transform.childCount > 0)
-    {
-      DestroyImmediate(transform.GetChild(0).gameObject);
+    if (ObjectGrid[x, y] != null) {
+      DestroyImmediate(ObjectGrid[x, y]);
     }
-    for (int x = 0; x < Width; x++)
-    {
-      for (int y = 0; y < Height; y++)
-      {
-        if (ObjectGrid[x, y] != null)
-        {
-          GameObject go = Instantiate(ObjectGrid[x, y]);
-          go.transform.SetParent(transform);
-          go.transform.localPosition = new Vector3((x + 0.5f) * scale, -(y + 0.5f) * scale, 0);
-        }
-      }
-    }
+
+    ObjectGrid[x, y] = Instantiate(go);
+    ObjectGrid[x, y].transform.SetParent(transform);
+    ObjectGrid[x, y].transform.localPosition = new Vector3((x + 0.5f) * scale, -(y + 0.5f) * scale, 0);
   }
+
 
   public void SetObject(Coords c, GameObject go) {
     SetObject(c.x, c.y, go);
@@ -111,8 +109,7 @@ public class Grid : MonoBehaviour {
     {
       SetObject(selected[i], go);
     }
-
-    BuildTiles();
+    
   }
 
   void OnDrawGizmosSelected()
@@ -137,10 +134,7 @@ public class Grid : MonoBehaviour {
       Gizmos.DrawCube(new Vector3(transform.position.x + (selected[i].x+ 0.5f)* scale , transform.position.y  -(selected[i].y + 0.5f) * scale, transform.position.z - gizmoHeight), new Vector3(scale, scale, 0));
     }
   }
-
-  void Start() {
-    BuildTiles();
-  }
+  
   public struct Coords {
     public int x;
     public int y;

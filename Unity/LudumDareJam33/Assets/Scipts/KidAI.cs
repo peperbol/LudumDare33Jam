@@ -1,18 +1,147 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
+[RequireComponent(typeof(Movement))]
 public class KidAI : MonoBehaviour {
 
-  enum State { Normal, Scared, Dead}
+  public enum State { Normal, Scared,Distracted, Dead};
+
+  public NavNode destination;
+  private NavNode nextNode;
+  Vector2 nextNodePosition;
+
+  KidsGroup group;
+
+  State currentState = State.Normal;
+  List<NavNode> doorsVisited = new List<NavNode>();
+  public bool reachedNextNode = false;
+  Movement movement;
 
 
-	// Use this for initialization
-	void Start () {
-	  
-	}
-	
-	// Update is called once per frame
+  bool InGroup {
+    get {
+      return group != null;
+    }
+  }
+
+  public void Scare() {
+
+  }
+
+  public NavNode NextNode {
+    get {
+      return nextNode;
+    }
+    set {
+      nextNode = value;
+      nextNodePosition = nextNode.getRandomPosition();
+      reachedNextNode = false;
+    }
+  }
+
+  public bool ReachedNextNode
+  {
+    get
+    {
+      return reachedNextNode;
+    }
+  }
+
+  public KidsGroup Group
+  {
+    get
+    {
+      return group;
+    }
+
+    set
+    {
+      group = value;
+    }
+  }
+
+  void SetNextNode() {
+    if (InGroup) {
+      group.SetNextNode();
+      return;
+    }
+    if(NextNode == null || NextNode.Id != destination.Id)
+    {
+      NextNode = NextNode.GetNodeDirection(destination);
+      return;
+    }
+    if (destination.type == NavNode.NodeType.Door) doorsVisited.Add(destination);
+    SetNextDestination();
+  }
+
+  void SetNextDestination() {
+    if (!InGroup) {
+      if (currentState == State.Normal)
+      {
+        destination = NextNode.GetNode(NavNode.NodeType.Door, doorsVisited);
+        if (destination == null) {
+          doorsVisited = new List<NavNode>();
+
+          destination = NextNode.GetNode(NavNode.NodeType.Door, doorsVisited);
+        }
+        SetNextNode();
+      }
+      else
+      {
+        //todo
+      }
+    }
+    else {
+      group.SetNextDestination();
+    }
+  }
+
+	void Move()
+  {
+    if (CanMoveOn())
+    {
+      SetNextNode();
+    }
+
+    Vector2 myPos = new Vector2(transform.position.x, transform.position.y);
+    movement.Move(nextNodePosition - myPos);
+  }
+
+  bool CanMoveOn() {
+    if (!InGroup) {
+      return reachedNextNode;
+    }
+    else
+    {
+
+      return group.CanMoveOn();
+    }
+  }
+
 	void Update () {
-	  
-	}
+    switch (currentState)
+    {
+      case State.Normal:
+        Move();
+        break;
+      case State.Scared:
+        break;
+      case State.Distracted:
+        break;
+      case State.Dead:
+        break;
+      default:
+        break;
+    }
+
+
+  }
+  void Start() {
+    movement = GetComponent<Movement>();
+  }
+
+  void OnTriggerStay2D(Collider2D c) {
+    if (c == NextNode.Col) reachedNextNode = true;
+  }
 }
