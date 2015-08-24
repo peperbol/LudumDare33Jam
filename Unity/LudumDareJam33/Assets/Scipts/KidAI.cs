@@ -7,7 +7,7 @@ public class KidAI : MonoBehaviour {
 
   public enum State { Normal, Scared,Distracted, Dead};
 
-  public NavNode destination;
+  public Queue<NavNode> destination;
   private NavNode nextNode;
   Vector2 nextNodePosition;
 
@@ -66,12 +66,12 @@ public class KidAI : MonoBehaviour {
       group.SetNextNode();
       return;
     }
-    if(NextNode == null || NextNode.Id != destination.Id)
+    if (destination != null && destination.Count > 0)
     {
-      NextNode = NextNode.GetNodeDirection(destination);
+      NextNode = destination.Dequeue() ;
       return;
     }
-    if (destination.type == NavNode.NodeType.Door) doorsVisited.Add(destination);
+    if (NextNode.type == NavNode.NodeType.Door) doorsVisited.Add(NextNode);
     SetNextDestination();
   }
 
@@ -79,11 +79,10 @@ public class KidAI : MonoBehaviour {
     if (!InGroup) {
       if (currentState == State.Normal)
       {
-        destination = NextNode.GetNode(NavNode.NodeType.Door, doorsVisited);
+        destination = NextNode.GetNodeDirection(NavNode.NodeType.Door, doorsVisited);
         if (destination == null) {
           doorsVisited = new List<NavNode>();
-
-          destination = NextNode.GetNode(NavNode.NodeType.Door, doorsVisited);
+          destination = NextNode.GetNodeDirection(NavNode.NodeType.Door, doorsVisited);
         }
         SetNextNode();
       }

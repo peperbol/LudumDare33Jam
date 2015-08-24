@@ -9,7 +9,7 @@ public class KidsGroup : MonoBehaviour {
 
   List<NavNode> doorsVisited = new List<NavNode>();
 
-  public NavNode destination;
+  public Queue<NavNode> destination;
   public NavNode nextNode;
 
   NavNode NextNode
@@ -28,7 +28,7 @@ public class KidsGroup : MonoBehaviour {
     }
   }
 
-  public NavNode Destination
+  public Queue<NavNode> Destination
   {
     get
     {
@@ -46,23 +46,22 @@ public class KidsGroup : MonoBehaviour {
 
   public void SetNextNode()
   {
-    if (NextNode == null || NextNode.Id != Destination.Id)
+    if ( Destination != null && Destination.Count > 0)
     {
-      NextNode = NextNode.GetNodeDirection(Destination);
+      NextNode = destination.Dequeue();
       return;
     }
-    if (Destination.type == NavNode.NodeType.Door) doorsVisited.Add(Destination);
+    if (NextNode.type == NavNode.NodeType.Door)  doorsVisited.Add(NextNode);
     SetNextDestination();
   }
 
   public void SetNextDestination()
   {
-    Destination = NextNode.GetNode(NavNode.NodeType.Door, doorsVisited);
+    Destination = NextNode.GetNodeDirection(NavNode.NodeType.Door, doorsVisited);
     if (Destination == null)
     {
       doorsVisited = new List<NavNode>();
-      Debug.Log("h");
-      Destination = NextNode.GetNode(NavNode.NodeType.Door, doorsVisited);
+      Destination = NextNode.GetNodeDirection(NavNode.NodeType.Door, doorsVisited);
     }
     SetNextNode();
   }

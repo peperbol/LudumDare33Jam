@@ -19,8 +19,8 @@ public class NavNode : MonoBehaviour
     col = GetComponent<CircleCollider2D>();
     id = idCount++;
   }
-
-  public NavNode GetNodeDirection(NavNode node, List<NavNode> exclude, ref int hops, int maxhops, bool excludeThis)
+  /*
+  public Queue<NavNode> GetNodeDirection(NavNode node, List<NavNode> exclude, ref int hops, int maxhops, bool excludeThis)
   {
 
     hops++;
@@ -65,24 +65,28 @@ public class NavNode : MonoBehaviour
   {
     return GetNodeDirection(node, new List<NavNode>());
   }
-
-  public NavNode GetNode(NodeType type, List<NavNode> exclude, ref int hops, int maxhops)
+  */
+  public Queue<NavNode> GetNodeDirection(NodeType type, Queue<NavNode> currentQueue, List<NavNode> exclude, ref int hops, int maxhops)
   {
     hops++;
 
     List<NavNode> passed = new List<NavNode>(exclude);
+    Queue<NavNode> queue = new Queue<NavNode>(currentQueue);
+
+    queue.Enqueue(this);
 
     if (hops >= maxhops) return null;
-
-    if (!passed.Contains(this))
+    if (!exclude.Contains(this))
     {
       if (this.type == type)
       {
-        return this;
+
+        return queue;
       }
       passed.Add(this);
     }
-    NavNode currentNode = null;
+
+    Queue<NavNode> newQueue = null;
 
 
     for (int i = 0; i < connections.Count; i++)
@@ -90,30 +94,29 @@ public class NavNode : MonoBehaviour
       if (!passed.Contains(connections[i]))
       {
         int h = hops;
-        List<NavNode> tempPassed;
-        NavNode n = connections[i].GetNode(type, passed, ref h, maxhops);
+        Queue<NavNode> n = connections[i].GetNodeDirection(type, queue, passed, ref h, maxhops);
         if (n != null)
         {
-          currentNode = n;
+          newQueue = n;
           maxhops = h;
         }
       }
     }
-    
+
     hops = maxhops;
 
-    return currentNode ;
+    return newQueue;
   }
 
-  public NavNode GetNode(NodeType type)
+  public Queue<NavNode> GetNodeDirection(NodeType type)
   {
-    return GetNode(type, new List<NavNode>());
+    return GetNodeDirection(type, new List<NavNode>());
   }
 
-  public NavNode GetNode(NodeType type, List<NavNode> exclude)
+  public Queue<NavNode> GetNodeDirection(NodeType type, List<NavNode> exclude)
   {
     int i = 0;
-    return GetNode(type, exclude,  ref i, 99999);
+    return GetNodeDirection(type, new Queue<NavNode>(), exclude, ref i, 99999);
   }
 
   public Vector2 getRandomPosition()
@@ -132,5 +135,5 @@ public class NavNode : MonoBehaviour
   }
 
   public CircleCollider2D Col { get { return col; } }
-  
+
 }
